@@ -97,9 +97,9 @@
     var generateCalendars = function(event) {
         return {
             google: calendarGenerators.google(event),
-            yahoo: calendarGenerators.yahoo(event),
-            ical: calendarGenerators.ical(event),
-            outlook: calendarGenerators.outlook(event)
+            ///yahoo: calendarGenerators.yahoo(event),
+            //ical: calendarGenerators.ical(event),
+            //outlook: calendarGenerators.outlook(event)
         };
     };
 
@@ -129,7 +129,7 @@
         var result = document.createElement('div');
 
         result.innerHTML = '<label id="add-to-calendar-label" for="checkbox-for-' +
-            calendarId + '" class="btn btn-fill btn-small"><i class="fa fa-calendar"></i>&nbsp;&nbsp; Add to Calendar</label>';
+            calendarId + '" class="btn btn-fill btn-small"><i class="fa fa-calendar"></i>&nbsp;&nbsp; Agregar al calendario</label>';
         result.innerHTML += '<input name="add-to-calendar-checkbox" class="add-to-calendar-checkbox" id="checkbox-for-' + calendarId + '" type="checkbox">';
 
         Object.keys(calendars).forEach(function(services) {

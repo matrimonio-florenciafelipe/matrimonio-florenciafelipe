@@ -104,7 +104,7 @@ $(document).ready(function () {
             } else {
                 $('section.navigation').removeClass('fixed');
                 $('header').css({
-                    "border-bottom": "solid 1px rgba(255, 255, 255, 0.2)",
+                    "border-bottom": "none",
                     "padding": "50px 0"
                 });
                 $('header .member-actions').css({
@@ -155,8 +155,6 @@ $(document).ready(function () {
 
             '<div class="g-plusone" data-size="medium"></div>';
 
-        // '<iframe src="https://plusone.google.com/_/+1/fastbutton?bsv&amp;size=medium&amp;url=' + encodeURIComponent(window.location) + '" allowtransparency="true" frameborder="0" scrolling="no" title="+1" style="width:105px; height:21px;"></iframe>';
-
         share_bar[i].innerHTML = html;
         share_bar[i].style.display = 'inline-block';
     }
@@ -184,23 +182,23 @@ $(document).ready(function () {
         },
         data: {
             // Event title
-            title: "Ram and Antara's Wedding",
+            title: "Matrimonio Florencia y Felipe",
 
             // Event start date
-            start: new Date('Nov 27, 2017 10:00'),
+            start: new Date('Feb 4, 2022 17:40'),
 
             // Event duration (IN MINUTES)
             // duration: 120,
 
             // You can also choose to set an end time
             // If an end time is set, this will take precedence over duration
-            end: new Date('Nov 29, 2017 00:00'),
+            end: new Date('Feb 5, 2022 5:00'),
 
             // Event Address
-            address: 'ITC Fortune Park Hotel, Kolkata',
+            address: 'Parroquia del Sagrado Corozón de Jesús de Providencia, Providencia, Santiago',
 
             // Event Description
-            description: "We can't wait to see you on our big day. For any queries or issues, please contact Mr. Amit Roy at +91 9876543210."
+            description: "No podemos esperar para verlos en este gran día. Cualquier duda puedes contactarnos a nosotros: Florencia +56 9 4259 0371; Felipe +56 9 6687 3759."
         }
     });
 
@@ -208,17 +206,49 @@ $(document).ready(function () {
 
 
     /********************** RSVP **********************/
+
+    function titleCase(str) {
+        var splitStr = str.toLowerCase().split(' ');
+        for (var i = 0; i < splitStr.length; i++) {
+            // You do not need to check if i is larger than splitStr length, as your for does that for you
+            // Assign it back to the array
+            splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+        }
+        // Directly return the joined string
+        return splitStr.join(' '); 
+    }
+
+    function normalize(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+    }
+
+
+
     $('#rsvp-form').on('submit', function (e) {
         e.preventDefault();
-        var data = $(this).serialize();
 
-        $('#alert-wrapper').html(alert_markup('info', '<strong>Just a sec!</strong> We are saving your details.'));
+        var urlString = new URLSearchParams();
+        var formData = new FormData(this);
+        var food = document.getElementById('dropdownMenu1').innerHTML;
+        formData.append('menu', food);
+        for (const [name,value] of formData) {
+            if (name === 'name') {
+                urlString.append(name, titleCase(value));
+            } else {
+                urlString.append(name, value);
+            }  
+        }
+        var data = urlString.toString();
+        console.log(data, 'data');
+
+        $('#alert-wrapper').html(alert_markup('info', '<strong>Un momento!</strong> Estamos guardando tu respuesta.'));
 
         if (MD5($('#invite_code').val()) !== 'b0e53b10c1f55ede516b240036b88f40'
             && MD5($('#invite_code').val()) !== '2ac7f43695eb0479d5846bb38eec59cc') {
-            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Your invite code is incorrect.'));
+            $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> Tu código de invitación es incorrecto.'));
+            // https://script.google.com/macros/s/AKfycbwwPOFOUvWShjegaFde0xZUUQ4NGFHQ5MdTmmq-sm-LFy1c-y3lLZA3RNt4C16awlaIuQ/exec
         } else {
-            $.post('https://script.google.com/macros/s/AKfycbzUqz44wOat0DiGjRV1gUnRf4HRqlRARWggjvHKWvqniP7eVDG-/exec', data)
+            $.post('https://script.google.com/macros/s/AKfycbzKiReGoEA5PE0u6Ft2a2M4bTC2z65soRrvFzuEcRrHjSCFy2JtrquPiMaBuPvR_MxP0w/exec', data)
                 .done(function (data) {
                     console.log(data);
                     if (data.result === "error") {
@@ -230,7 +260,7 @@ $(document).ready(function () {
                 })
                 .fail(function (data) {
                     console.log(data);
-                    $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry!</strong> There is some issue with the server. '));
+                    $('#alert-wrapper').html(alert_markup('danger', '<strong>Perdón!</strong> Hay algunos problemas con el servidor. '));
                 });
         }
     });
@@ -491,3 +521,50 @@ var MD5 = function (string) {
 
     return temp.toLowerCase();
 };
+
+// Set the date we're counting down to
+var countDownDate = new Date("Feb 4, 2023 17:20:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = days + " días: " + hours + " horas: "
+  + minutes + " minutos: " + seconds + " segundos ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+
+$('.dropdown-inverse li > span').click(function(e){
+    $('.status').text(this.innerHTML);
+    $('.status').css("color", "#999");
+});
+
+$('.input-name').keydown(function(e){
+    $(".input-name").css("text-transform", "capitalize");
+
+    if (this.value.length === 1) {
+        $(".input-name").css("text-transform", "none");
+        this.value = this.value[0].toUpperCase();
+    }
+
+    if (this.value.length === 0) {
+        $(".input-name").css("text-transform", "none");
+    }
+});
