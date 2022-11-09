@@ -230,7 +230,8 @@ $(document).ready(function () {
         var urlString = new URLSearchParams();
         var formData = new FormData(this);
         var food = document.getElementById('dropdownMenu1').innerHTML;
-        if (food !== 'Menú tradicional' || food !== 'Menú vegetariano' || food !== 'Menú celíaco') {
+        const menus = ['Menú tradicional', 'Menú vegetariano', 'Menú celíaco'];
+        if (!menus.includes(food)) {
             food = 'Menú tradicional';
         }
         formData.append('menu', food);
